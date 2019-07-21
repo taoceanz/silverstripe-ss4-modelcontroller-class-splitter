@@ -7,9 +7,8 @@ from re import search, findall
 # extract classname from string
 def get_class_str_by_type(reg, string):
     # define regex
-    reg_coding_chars = "`~@#$%^&*\(\)-_=+\[\]\{\}\\|;:'\",.\<\>/?"
     reg_comment = "(/\*+[\n\t\w\s*@/.]+\*{1,}/\n)?"
-    reg_class = "class\s\w+" + reg
+    reg_class = "class\s\w+[" + reg + "]?"
     reg_comment_and_class = "(" + reg_comment + reg_class + ")"
     # set defaults and attempt
     string_after_captured_class = None
@@ -62,8 +61,15 @@ def display_error_if_no_classes(d):
 
 # Add a index and value to dictionary
 def add_to_dict(dict, i, v):
-    if v != None:
-        dict[i] = v
+    print(type(v))
+    if v == None:
+        return
+    v = v.strip()
+    if v == '':
+        return
+    # store only if exists
+    dict[i] = v
+
 
 
 # Actions start
@@ -79,7 +85,6 @@ for filepath in Path(path_to_files).glob("**/*.php"):
     filename = get_current_classname(filepath)
     with open(filepath.absolute()) as f:
         model, controller = split_model_and_controller(f.readlines())
-        # store only if not None
         add_to_dict(all_models, filename, model)
         add_to_dict(all_controllers, filename, controller)
 
