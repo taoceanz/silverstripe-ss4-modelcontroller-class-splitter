@@ -61,7 +61,6 @@ def display_error_if_no_classes(d):
 
 # Add a index and value to dictionary
 def add_to_dict(dict, i, v):
-    print(type(v))
     if v == None:
         return
     v = v.strip()
